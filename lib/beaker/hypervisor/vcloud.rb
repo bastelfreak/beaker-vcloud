@@ -73,16 +73,22 @@ module Beaker
 
     def create_clone_spec(host)
       # Add VM annotation
+      additionalExtraConfig = if host['extraConfig']
+                                host['extraConfig'].map do |key, value|
+                                  { key: key, value: value }
+                                end
+                              else
+                                []
+                              end
+      extraConfig = [{ key: 'guestinfo.hostname', value: host['vmhostname'] }] + additionalExtraConfig
+      @logger.debug("#{host['vmhostname']}: extraConfig is: #{extraConfig}")
       configSpec = RbVmomi::VIM.VirtualMachineConfigSpec(
         annotation: 'Base template:  ' + host['template'] + "\n" +
           'Creation time:  ' + Time.now.strftime('%Y-%m-%d %H:%M') + "\n\n" +
           'CI build link:  ' + (ENV['BUILD_URL'] || 'Deployed independently of CI') +
           'department:     ' + @options[:department] +
           'project:        ' + @options[:project],
-        extraConfig: [
-          { key: 'guestinfo.hostname',
-            value: host['vmhostname'], },
-        ],
+        extraConfig: extraConfig,
       )
 
       # Are we using a customization spec?
