@@ -82,6 +82,19 @@ module Beaker
                               end
       extraConfig = [{ key: 'guestinfo.hostname', value: host['vmhostname'] }] + additionalExtraConfig
       @logger.debug("#{host['vmhostname']}: extraConfig is: #{extraConfig}")
+
+      vAppConfigSpec = RbVmomi::VIM.VmConfigSpec(
+        property: [RbVmomi::VIM.VAppPropertySpec(
+          operation: 'add',
+          info: RbVmomi::VIM.VAppPropertyInfo(
+            key: 1,
+            category: 'network',
+            type: 'hostname',
+            value: 'test',
+          ),
+        )],
+      )
+
       configSpec = RbVmomi::VIM.VirtualMachineConfigSpec(
         annotation: 'Base template:  ' + host['template'] + "\n" +
           'Creation time:  ' + Time.now.strftime('%Y-%m-%d %H:%M') + "\n\n" +
@@ -89,6 +102,7 @@ module Beaker
           'department:     ' + @options[:department] +
           'project:        ' + @options[:project],
         extraConfig: extraConfig,
+        vAppConfig: vAppConfigSpec,
       )
 
       # Are we using a customization spec?
