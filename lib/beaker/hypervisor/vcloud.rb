@@ -91,8 +91,9 @@ module Beaker
           info: RbVmomi::VIM.VAppPropertyInfo(
             key: 1,
             category: 'network',
-            type: 'hostname',
+            type: 'string',
             value: 'test',
+            classId: 'hostname'
           ),
         )],
       )
