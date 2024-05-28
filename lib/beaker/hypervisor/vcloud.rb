@@ -93,7 +93,8 @@ module Beaker
             category: 'network',
             type: 'string',
             value: 'test',
-            classId: 'hostname'
+            classId: 'hostname',
+            id: 'hostname'
           ),
         )],
       )
