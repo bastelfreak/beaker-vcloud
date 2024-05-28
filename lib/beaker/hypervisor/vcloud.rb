@@ -84,7 +84,19 @@ module Beaker
                               end
       #extraConfig = [{ key: 'guestinfo.hostname', value: host['vmhostname'] }] + additionalExtraConfig
       #@logger.debug("#{host['vmhostname']}: extraConfig is: #{extraConfig}")
-
+      #vAppConfigSpec = RbVmomi::VIM.VmConfigSpec(
+      #  property: [RbVmomi::VIM.VAppPropertySpec(
+      #    operation: 'add',
+      #    info: RbVmomi::VIM.VAppPropertyInfo(
+      #      key: 1,
+      #      category: 'network',
+      #      type: 'string',
+      #      value: 'test',
+      #      classId: 'hostname',
+      #      id: 'hostname'
+      #    ),
+      #  )],
+      #)
       vAppConfigSpec = RbVmomi::VIM.VmConfigSpec(
         property: [RbVmomi::VIM.VAppPropertySpec(
           operation: 'add',
@@ -93,8 +105,9 @@ module Beaker
             category: 'network',
             type: 'string',
             value: 'test',
-            classId: 'hostname',
-            id: 'hostname'
+            classId: '',
+            id: 'hostname',
+            label: 'hostname',
           ),
         )],
       )
