@@ -82,8 +82,8 @@ module Beaker
                               else
                                 []
                               end
-      extraConfig = [{ key: 'guestinfo.hostname', value: host['vmhostname'] }] + additionalExtraConfig
-      @logger.debug("#{host['vmhostname']}: extraConfig is: #{extraConfig}")
+      #extraConfig = [{ key: 'guestinfo.hostname', value: host['vmhostname'] }] + additionalExtraConfig
+      #@logger.debug("#{host['vmhostname']}: extraConfig is: #{extraConfig}")
 
       vAppConfigSpec = RbVmomi::VIM.VmConfigSpec(
         property: [RbVmomi::VIM.VAppPropertySpec(
@@ -103,7 +103,7 @@ module Beaker
           'CI build link:  ' + (ENV['BUILD_URL'] || 'Deployed independently of CI') +
           'department:     ' + @options[:department] +
           'project:        ' + @options[:project],
-        extraConfig: extraConfig,
+        #extraConfig: extraConfig,
         vAppConfig: vAppConfigSpec,
       )
 
@@ -119,8 +119,7 @@ module Beaker
       relocateSpec = RbVmomi::VIM.VirtualMachineRelocateSpec(
         datastore: @vsphere_helper.find_datastore(@options['datacenter'], @options['datastore']),
         pool: if @options['resourcepool']
-                @vsphere_helper.find_pool(@options['datacenter'],
-                                          @options['resourcepool'])
+                @vsphere_helper.find_pool(@options['datacenter'], @options['resourcepool'])
               end,
         diskMoveType: :moveChildMostDiskBacking,
       )
